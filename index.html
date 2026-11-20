@@ -1,0 +1,644 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101511">
+  <title>Linces’s Kits | Camisetas y conjuntos</title>
+  <style>
+    :root { color-scheme: dark; --bg:#101511; --panel:#181f19; --muted:#aab4a8; --cream:#f4f0e5; --lime:#d7f36a; --line:rgba(244,240,229,.13); }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; scroll-padding-top:88px; }
+    body { margin:0; background:var(--bg); color:var(--cream); font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; }
+    a { color:inherit; text-decoration:none; }
+    .topbar { position:sticky; top:0; z-index:5; background:rgba(16,21,17,.91); backdrop-filter:blur(14px); border-bottom:1px solid var(--line); }
+    .nav { width:min(1180px, calc(100% - 40px)); min-height:72px; margin:auto; display:flex; align-items:center; justify-content:space-between; gap:24px; }
+    .brand { font-weight:900; letter-spacing:-.06em; font-size:22px; white-space:nowrap; }.brand span { color:var(--lime); }
+    .navlinks { display:flex; align-items:center; gap:24px; color:#d9dfd6; font-size:13px; font-weight:650; }
+    .navlinks a:hover { color:var(--lime); }
+    .cart-toggle { border:1px solid var(--lime); background:transparent; color:var(--cream); padding:9px 13px; border-radius:999px; font:inherit; font-weight:800; cursor:pointer; white-space:nowrap; }
+    .cart-toggle:hover { background:var(--lime); color:#11160f; }
+    .cart-count { display:inline-grid; place-items:center; min-width:20px; height:20px; margin-left:5px; padding:0 5px; border-radius:999px; background:var(--lime); color:#11160f; font-size:11px; }
+    .hero { width:min(1180px, calc(100% - 40px)); min-height:430px; margin:0 auto; display:grid; grid-template-columns:1.2fr .8fr; align-items:center; gap:32px; padding:68px 0 78px; }
+    .eyebrow { color:var(--lime); font-size:11px; font-weight:800; letter-spacing:.18em; text-transform:uppercase; }
+    h1 { max-width:700px; margin:16px 0; font-size:clamp(48px,8vw,92px); letter-spacing:-.075em; line-height:.92; }
+    .hero p { max-width:510px; color:var(--muted); line-height:1.7; font-size:16px; }
+    .hero-cta { display:inline-flex; margin-top:18px; background:var(--lime); color:#11160f; padding:14px 20px; border-radius:999px; font-weight:850; font-size:13px; }
+    .hero-art { position:relative; min-height:280px; border-radius:28px; overflow:hidden; background:radial-gradient(circle at 70% 30%,rgba(215,243,106,.3),transparent 33%),linear-gradient(140deg,#29372a,#141a15 70%); border:1px solid var(--line); display:grid; place-items:center; }
+    .ball { width:190px; aspect-ratio:1; border:1px solid rgba(244,240,229,.4); border-radius:50%; display:grid; place-items:center; font-size:88px; transform:rotate(-15deg); box-shadow:0 30px 80px #0008; }
+    .ball-pair { display:flex; align-items:center; justify-content:center; }
+    .rugby-ball { width:132px; aspect-ratio:1.45; margin:76px 0 0 -52px; font-size:60px; transform:rotate(24deg); }
+    .price-row { display:flex; align-items:center; flex-wrap:wrap; gap:7px; margin-top:7px; }
+    .price-row .card-price { margin-top:0; }
+    .art-label { position:absolute; bottom:22px; left:24px; color:#dce3d9; font-size:11px; letter-spacing:.16em; text-transform:uppercase; }
+    .category-bar { width:min(1180px,calc(100% - 40px)); margin:0 auto; display:flex; gap:10px; overflow:auto; padding:0 0 28px; }
+    .category-bar a { white-space:nowrap; border:1px solid var(--line); padding:11px 16px; border-radius:999px; color:#e5e9e0; font-size:12px; font-weight:700; }
+    .category-bar a:hover { border-color:var(--lime); color:var(--lime); }
+    .search-wrap { width:min(1180px,calc(100% - 40px)); margin:0 auto 24px; display:grid; grid-template-columns:auto minmax(180px,1fr) auto; align-items:center; gap:14px; }
+    .search-wrap label { color:var(--lime); font-size:12px; font-weight:850; }
+    .search-wrap input { width:100%; min-height:44px; padding:0 15px; border:1px solid var(--line); border-radius:12px; background:var(--panel); color:var(--cream); font:inherit; font-size:13px; }
+    .search-wrap input::placeholder { color:#89948a; }
+    .search-wrap input:focus-visible { outline:2px solid var(--lime); outline-offset:2px; }
+    .search-status { min-width:130px; color:var(--muted); font-size:11px; text-align:right; }
+    .search-empty { margin:35px auto; padding:24px; border:1px solid var(--line); border-radius:14px; color:var(--muted); text-align:center; }
+    main { width:min(1180px,calc(100% - 40px)); margin:auto; padding-bottom:70px; }
+    .collection { padding:44px 0 56px; border-top:1px solid var(--line); scroll-margin-top:86px; }
+    .section-head { display:flex; align-items:end; justify-content:space-between; gap:20px; margin-bottom:24px; }
+    .section-head h2 { margin:8px 0 0; font-size:clamp(28px,4vw,42px); letter-spacing:-.055em; }
+    .price-tag { color:var(--lime); font-weight:850; font-size:14px; white-space:nowrap; }
+    .size-guide { margin:0 0 22px; padding:16px 18px; border:1px solid var(--line); border-radius:14px; background:rgba(255,255,255,.025); overflow-x:auto; }
+    .size-guide h3 { margin:0 0 12px; font-size:13px; }.size-guide table { border-collapse:collapse; width:min(440px,100%); font-size:12px; }
+    .size-guide th,.size-guide td { padding:8px 12px 8px 0; text-align:left; border-bottom:1px solid var(--line); }
+    .size-guide th { color:var(--muted); font-weight:650; }.size-guide td { color:var(--cream); }
+    #conjuntos .size-guide table { min-width:540px; width:100%; }
+    .size-note { color:var(--lime); font-size:12px; margin:12px 0 0; }
+    .grid { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:14px; }
+    .card { overflow:hidden; border:1px solid var(--line); border-radius:16px; background:var(--panel); }
+    .photo { aspect-ratio:4/5; position:relative; display:grid; place-items:center; overflow:hidden; background:linear-gradient(145deg,#273229,#171d18); color:#929c91; }
+    .photo img { width:100%; height:100%; position:absolute; inset:0; object-fit:cover; }
+    .placeholder { display:flex; flex-direction:column; align-items:center; gap:8px; font-size:11px; text-align:center; padding:12px; }
+    .placeholder b { color:#d1d9cf; font-size:12px; }
+    .card-info { padding:13px 14px 15px; }.card-title { font-size:13px; font-weight:750; }.card-price { color:var(--lime); font-size:12px; margin-top:7px; font-weight:800; }
+    .cart-add-button { width:100%; margin-top:12px; border:0; border-radius:10px; padding:11px 12px; background:var(--lime); color:#11160f; font:inherit; font-size:12px; font-weight:900; cursor:pointer; transition:transform .15s,filter .15s; }
+    .cart-add-button:hover { filter:brightness(1.07); transform:translateY(-1px); }
+    .cart-add-button:disabled { opacity:.45; cursor:not-allowed; transform:none; }
+    .size-choice { display:block; margin-top:12px; color:var(--muted); font-size:11px; font-weight:750; }
+    .size-choice select { width:100%; margin-top:6px; padding:10px 11px; border:1px solid var(--line); border-radius:9px; background:#101511; color:var(--cream); font:inherit; font-size:12px; cursor:pointer; }
+    .size-choice select:focus-visible { outline:2px solid var(--lime); outline-offset:2px; }
+    .cart-add-button:focus-visible,.cart-toggle:focus-visible,.cart-panel button:focus-visible { outline:2px solid white; outline-offset:3px; }
+    .cart-backdrop { position:fixed; inset:0; z-index:30; display:none; justify-content:flex-end; padding:14px; background:rgba(0,0,0,.72); }
+    .cart-backdrop.open { display:flex; }
+    .cart-panel { display:flex; flex-direction:column; width:min(440px,100%); max-height:100%; padding:22px; border:1px solid var(--line); border-radius:20px; background:var(--panel); box-shadow:0 24px 90px #0009; }
+    .cart-header { display:flex; justify-content:space-between; align-items:center; gap:12px; padding-bottom:16px; border-bottom:1px solid var(--line); }
+    .cart-header h2 { margin:0; font-size:23px; letter-spacing:-.04em; }
+    .cart-close { width:38px; height:38px; border:1px solid var(--line); border-radius:50%; background:transparent; color:var(--cream); font-size:24px; cursor:pointer; }
+    .cart-items { flex:1; min-height:100px; overflow:auto; padding:12px 0; }
+    .cart-empty { padding:30px 12px; color:var(--muted); text-align:center; font-size:14px; }
+    .cart-row { display:grid; grid-template-columns:58px 1fr auto; align-items:center; gap:12px; padding:12px 0; border-bottom:1px solid var(--line); }
+    .cart-row img { width:58px; height:70px; border-radius:8px; background:#252d26; object-fit:cover; }
+    .cart-row-title { font-size:12px; font-weight:800; line-height:1.4; }
+    .cart-row-price { margin-top:5px; color:var(--lime); font-size:12px; font-weight:800; }
+    .cart-row-size { margin-top:4px; color:var(--muted); font-size:11px; }
+    .cart-quantity { display:flex; align-items:center; gap:8px; margin-top:8px; }
+    .cart-quantity button,.cart-remove { border:1px solid var(--line); border-radius:7px; background:#222b23; color:var(--cream); cursor:pointer; }
+    .cart-quantity button { width:26px; height:26px; font-size:15px; }
+    .cart-remove { padding:7px 9px; font-size:11px; }
+    .cart-summary { padding-top:16px; border-top:1px solid var(--line); }
+    .cart-total-line { display:flex; justify-content:space-between; align-items:center; font-weight:850; }
+    .cart-total-line strong { color:var(--lime); font-size:19px; }
+    .transfer-box { margin-top:15px; padding:14px; border:1px solid var(--line); border-radius:13px; background:rgba(215,243,106,.045); }
+    .transfer-box h3 { margin:0 0 7px; font-size:14px; }
+    .transfer-box p { margin:7px 0 0; color:var(--muted); font-size:11px; line-height:1.5; }
+    .alias-line { display:flex; justify-content:space-between; align-items:center; gap:10px; margin-top:10px; padding:10px 11px; border-radius:9px; background:#101511; }
+    .alias-line strong { color:var(--lime); font-size:15px; letter-spacing:.03em; }
+    .alias-copy { border:1px solid var(--line); border-radius:7px; padding:7px 9px; background:#222b23; color:var(--cream); font:inherit; font-size:10px; font-weight:800; cursor:pointer; }
+    .receipt-send { width:100%; margin-top:12px; border:0; border-radius:9px; padding:11px; background:#20b95a; color:white; font:inherit; font-size:12px; font-weight:900; cursor:pointer; }
+    .receipt-send:disabled { opacity:.48; cursor:not-allowed; }
+    .cart-note { margin:9px 0 0; color:var(--muted); font-size:11px; line-height:1.5; }
+    .cart-clear { width:100%; margin-top:13px; border:1px solid var(--line); border-radius:10px; padding:10px; background:transparent; color:var(--muted); font:inherit; font-size:12px; font-weight:750; cursor:pointer; }
+    .cart-toast { position:fixed; z-index:40; right:20px; bottom:78px; padding:12px 16px; border-radius:12px; background:var(--lime); color:#11160f; font-size:13px; font-weight:850; box-shadow:0 8px 30px #0006; opacity:0; transform:translateY(8px); pointer-events:none; transition:opacity .18s,transform .18s; }
+    .cart-toast.show { opacity:1; transform:translateY(0); }
+    .whatsapp-float { position:fixed; z-index:10; right:20px; bottom:20px; display:inline-flex; align-items:center; gap:8px; padding:12px 17px; border-radius:999px; background:#25d366; color:#082511; font-size:13px; font-weight:900; box-shadow:0 8px 30px #0006; }
+    .whatsapp-float:hover { filter:brightness(1.06); transform:translateY(-1px); }
+    .photo.has-photo { cursor:zoom-in; }.photo.has-photo:focus-visible { outline:2px solid var(--lime); outline-offset:3px; }
+    .lightbox { position:fixed; inset:0; z-index:20; display:none; place-items:center; padding:20px; background:rgba(4,7,5,.94); }
+    .lightbox.open { display:grid; }
+    .lightbox-shell { position:relative; width:min(1100px,100%); height:min(90vh,900px); display:grid; grid-template-rows:auto 1fr; gap:12px; }
+    .lightbox-toolbar { display:flex; justify-content:flex-end; align-items:center; gap:8px; }
+    .lightbox-toolbar button,.lightbox-close { border:1px solid rgba(244,240,229,.28); background:#202820; color:var(--cream); border-radius:999px; cursor:pointer; font:inherit; }
+    .lightbox-toolbar button { min-width:42px; height:38px; font-size:16px; }.lightbox-toolbar .zoom-label { min-width:64px; font-size:12px; cursor:default; }
+    .lightbox-close { position:absolute; z-index:2; top:54px; right:8px; width:42px; height:42px; font-size:24px; }
+    .lightbox-toolbar button:hover,.lightbox-close:hover { border-color:var(--lime); color:var(--lime); }
+    .lightbox-view { min-height:0; overflow:auto; display:grid; place-items:center; }
+    .lightbox-view img { display:block; width:auto; height:auto; max-width:88vw; max-height:76vh; object-fit:contain; border-radius:8px; box-shadow:0 20px 90px #0009; cursor:zoom-in; }
+    footer { border-top:1px solid var(--line); text-align:center; padding:26px 20px; color:var(--muted); font-size:12px; }
+    @media(max-width:900px) { .grid { grid-template-columns:repeat(3,minmax(0,1fr)); } .hero { min-height:380px; } }
+    @media(max-width:620px) { .nav { width:calc(100% - 28px); min-height:64px; }.navlinks { gap:10px; font-size:11px; }.brand { font-size:19px; }.cart-toggle { padding:8px 10px; font-size:11px; }.hero { width:calc(100% - 32px); grid-template-columns:1fr; padding:50px 0 40px; gap:26px; }.hero-art { min-height:210px; }.ball { width:140px; font-size:65px; }.rugby-ball { width:100px; font-size:48px; margin-left:-42px; margin-top:56px; }.category-bar,main { width:calc(100% - 32px); }.search-wrap { width:calc(100% - 32px); grid-template-columns:1fr auto; gap:7px 10px; margin-bottom:16px; }.search-wrap label { grid-column:1/-1; }.search-status { min-width:0; }.grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }.card-info { padding:11px; }.section-head { align-items:start; flex-direction:column; gap:8px; }.cart-backdrop { padding:8px; }.cart-panel { padding:17px; } }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <nav class="nav" aria-label="Navegación principal">
+      <a class="brand" href="#inicio">LINCES’S <span>KITS</span></a>
+      <div class="navlinks">
+        <a href="#conjuntos">Conjuntos</a>
+        <a href="#futbol">Camisetas</a>
+        <a href="#shorts">Shorts</a>
+        <a href="#rugby">Remeras Rugby</a>
+        <button type="button" class="cart-toggle" id="cart-toggle" aria-haspopup="dialog" aria-controls="cart-panel">Carrito <span class="cart-count" id="cart-count" aria-live="polite">0</span></button>
+      </div>
+    </nav>
+  </header>
+  <section class="hero" id="inicio">
+    <div>
+      <div class="eyebrow">Pasión que se lleva puesta</div>
+      <h1>Vestí tus<br>colores.</h1>
+      <p>Camisetas y conjuntos para vivir el deporte dentro y fuera de la cancha. Elegí tu sección y encontrá tu próxima camiseta.</p>
+      <a class="hero-cta" href="#colecciones">VER COLECCIONES&nbsp; ↘</a>
+    </div>
+    <div class="hero-art" aria-hidden="true"><div class="ball-pair"><div class="ball">⚽</div><div class="ball rugby-ball">🏉</div></div><div class="art-label">Tu equipo. Tu historia.</div></div>
+  </section>
+  <nav class="category-bar" id="colecciones" aria-label="Secciones de productos">
+    <a href="#conjuntos">Conjuntos · $35.000</a>
+    <a href="#futbol">Camisetas · $35.000</a>
+    <a href="#shorts">Shorts de Fútbol · $30.000</a>
+    <a href="#rugby">Remeras Rugby · $50.000</a>
+  </nav>
+  <div class="search-wrap" role="search">
+    <label for="product-search">Buscar productos</label>
+    <input id="product-search" type="search" placeholder="Equipo o color, por ejemplo River Plate o Negra" autocomplete="off">
+    <span class="search-status" id="search-status" aria-live="polite"></span>
+  </div>
+  <main id="catalogo"></main>
+  <div class="search-empty" id="search-empty" hidden>No encontramos productos con esa búsqueda. Probá con otro equipo o color.</div>
+  <footer>LINCES’S KITS · Pasión por el deporte</footer>
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <div class="lightbox-shell" role="dialog" aria-modal="true" aria-label="Foto ampliada del producto">
+      <div class="lightbox-toolbar">
+        <button type="button" id="zoom-out" aria-label="Alejar">−</button>
+        <button type="button" id="zoom-label" class="zoom-label" aria-label="Restablecer zoom">100%</button>
+        <button type="button" id="zoom-in" aria-label="Acercar">+</button>
+      </div>
+      <button type="button" id="lightbox-close" class="lightbox-close" aria-label="Cerrar">×</button>
+      <div class="lightbox-view"><img id="lightbox-image" alt=""></div>
+    </div>
+  </div>
+  <div class="cart-backdrop" id="cart-backdrop" aria-hidden="true">
+    <section class="cart-panel" id="cart-panel" role="dialog" aria-modal="true" aria-labelledby="cart-title">
+      <div class="cart-header"><h2 id="cart-title">Tu carrito</h2><button type="button" class="cart-close" id="cart-close" aria-label="Cerrar carrito">×</button></div>
+      <div class="cart-items" id="cart-items" aria-live="polite"></div>
+      <div class="cart-summary"><div class="cart-total-line"><span>Total a transferir</span><strong id="cart-total">$0</strong></div><div class="transfer-box" id="transfer-box" hidden><h3>Pagá por transferencia</h3><p>Transferí el total a tu cuenta de Mercado Pago usando este alias:</p><div class="alias-line"><strong id="mp-alias">lince.15</strong><button type="button" class="alias-copy" id="alias-copy">Copiar alias</button></div><p>Después, enviá el comprobante por WhatsApp. Al abrirse el chat, adjuntá la captura del pago.</p><button type="button" class="receipt-send" id="receipt-send" disabled>Enviar comprobante por WhatsApp</button><p id="whatsapp-hint" class="cart-note">Falta configurar el número de WhatsApp del vendedor.</p></div><button type="button" class="cart-clear" id="cart-clear">Vaciar carrito</button></div>
+    </section>
+  </div>
+  <div class="cart-toast" id="cart-toast" role="status" aria-live="polite">Agregado al carrito</div>
+  <a class="whatsapp-float" href="https://wa.me/5493512600747?text=Hola%2C%20tengo%20una%20consulta%20sobre%20Linces%27s%20Kits." target="_blank" rel="noopener noreferrer" aria-label="Contactar a Linces's Kits por WhatsApp"><span aria-hidden="true">◉</span> WhatsApp</a>
+
+  <script>
+    /*
+      PERSONALIZÁ TUS PRODUCTOS:
+      Pegá la URL de cada foto entre las comillas. Dejá "" si todavía no tenés imagen.
+      Las fotos cargadas aparecen automáticamente; el catálogo puede crecer según las imágenes agregadas.
+    */
+    const productos = {
+      conjuntos: {
+        titulo: "Conjuntos",
+        precio: 35000,
+        imagenes: [
+          "assets/conjuntos/conjunto-01-mejorada.jpg", "assets/conjuntos/conjunto-02-mejorada.jpg", "assets/conjuntos/conjunto-03-mejorada.jpg", "assets/conjuntos/conjunto-04-mejorada.jpg", "assets/conjuntos/conjunto-05-mejorada.jpg", "assets/conjuntos/conjunto-06-mejorada.jpg", "assets/conjuntos/conjunto-07-mejorada.jpg", "assets/conjuntos/conjunto-08-mejorada.jpg", "assets/conjuntos/conjunto-09-mejorada.jpg", "assets/conjuntos/conjunto-10-mejorada.jpg", "assets/conjuntos/conjunto-11-mejorada.jpg", "assets/conjuntos/conjunto-12-mejorada.jpg", "assets/conjuntos/conjunto-13-mejorada.jpg", "assets/conjuntos/conjunto-14-mejorada.jpg", "assets/conjuntos/conjunto-15-mejorada.jpg", "assets/conjuntos/conjunto-16-mejorada.jpg", "assets/conjuntos/conjunto-17-mejorada.jpg", "assets/conjuntos/conjunto-18-mejorada.jpg", "assets/conjuntos/conjunto-19-mejorada.jpg", "assets/conjuntos/conjunto-20-mejorada.jpg", "assets/conjuntos/conjunto-21-mejorada.jpg", "assets/conjuntos/conjunto-22-mejorada.jpg"
+        ]
+      },
+      futbol: {
+        titulo: "Camisetas de Fútbol",
+        precio: 35000,
+        imagenes: [
+          "assets/futbol/futbol-01.jpeg",
+          "assets/futbol/futbol-02.jpeg",
+          "assets/futbol/futbol-03.jpeg",
+          "assets/futbol/futbol-04.jpeg",
+          "assets/futbol/futbol-05.jpeg",
+          "assets/futbol/futbol-06.jpeg",
+          "assets/futbol/futbol-07.jpeg",
+          "assets/futbol/futbol-08.jpeg",
+          "assets/futbol/futbol-09.jpeg",
+          "assets/futbol/futbol-10.jpeg",
+          "assets/futbol/futbol-11.jpeg",
+          "assets/futbol/futbol-12.jpeg",
+          "assets/futbol/futbol-13.jpeg",
+          "assets/futbol/futbol-14.jpeg",
+          "assets/futbol/futbol-15.jpeg",
+          "assets/futbol/futbol-16.jpeg",
+          "assets/futbol/futbol-17.jpeg",
+          "assets/futbol/futbol-18.jpeg",
+          "assets/futbol/futbol-19.jpeg",
+          "assets/futbol/futbol-20.jpeg",
+          "assets/futbol/futbol-21.jpeg",
+          "assets/futbol/futbol-22.jpeg",
+          "assets/futbol/futbol-23.jpeg",
+          "assets/futbol/futbol-24.jpeg",
+          "assets/futbol/futbol-25.jpeg",
+          "assets/futbol/futbol-26.jpeg",
+          "assets/futbol/futbol-27.jpeg",
+          "assets/futbol/futbol-28.jpeg",
+          "assets/futbol/futbol-29.jpeg",
+          "assets/futbol/futbol-30.jpeg",
+          "assets/futbol/futbol-31.jpeg",
+          "assets/futbol/futbol-32.jpeg",
+          "assets/futbol/futbol-33.jpeg",
+          "assets/futbol/futbol-34.jpeg",
+          "assets/futbol/futbol-35.jpeg",
+          "assets/futbol/futbol-36.jpeg",
+          "assets/futbol/futbol-37.jpeg",
+          "assets/futbol/futbol-38.jpeg",
+          "assets/futbol/futbol-39.jpeg",
+          "assets/futbol/futbol-40.jpeg",
+          "assets/futbol/futbol-41.jpeg",
+          "assets/futbol/futbol-42.jpeg",
+          "assets/futbol/futbol-43.jpeg",
+          "assets/futbol/futbol-44.jpeg",
+          "assets/futbol/futbol-45.jpeg",
+          "assets/futbol/futbol-46.jpeg",
+          "assets/futbol/futbol-47.jpeg",
+          "assets/futbol/futbol-48.jpeg",
+          "assets/futbol/futbol-49.jpeg",
+          "assets/futbol/futbol-50.jpeg",
+          "assets/futbol/futbol-51.jpeg",
+          "assets/futbol/futbol-52.jpeg",
+          "assets/futbol/futbol-53.jpeg",
+          "assets/futbol/futbol-54.jpeg",
+          "assets/futbol/futbol-55.jpeg",
+          "assets/futbol/futbol-56.jpeg",
+          "assets/futbol/futbol-57.jpeg",
+          "assets/futbol/futbol-58.jpeg",
+          "assets/futbol/futbol-59.jpeg",
+          "assets/futbol/futbol-60.jpeg",
+          "assets/futbol/futbol-61-napoli-negra.jpeg",
+          "assets/futbol/futbol-62-real-madrid-negra.jpeg"
+        ]
+      },
+      shorts: {
+        titulo: "Shorts de Fútbol",
+        precio: 30000,
+        imagenes: [
+          "assets/shorts/short-river-plate-negro.jpeg",
+          "assets/shorts/short-boca-juniors-azul-amarillo.jpeg",
+          "assets/shorts/short-argentina-negro.jpeg"
+        ]
+      },
+      rugby: {
+        titulo: "Camisetas de Rugby",
+        precio: 50000,
+        imagenes: [
+          "assets/rugby/rugby-01.jpeg",
+          "assets/rugby/rugby-02.jpeg",
+          "assets/rugby/rugby-03.jpeg",
+          "assets/rugby/rugby-04.jpeg",
+          "assets/rugby/rugby-05.jpeg",
+          "assets/rugby/rugby-06.jpeg",
+          "assets/rugby/rugby-07.jpeg",
+          "assets/rugby/rugby-08.jpeg",
+          "assets/rugby/rugby-09.jpeg",
+          "assets/rugby/rugby-10.jpeg",
+          "assets/rugby/rugby-11.jpeg"
+        ]
+      }
+    };
+
+    const nombresProductos = {
+      conjuntos: [
+        "Manchester United Roja", "Liverpool Negra AXA", "Barcelona Violeta", "Brasil Verde Lima",
+        "Corinthians Violeta", "Real Madrid Verde Lima", "Manchester United Violeta", "Manchester City Negra",
+        "River Plate Roja", "Chelsea Negra", "Roma Roja", "Barcelona Negra",
+        "Aston Villa Rosa", "Boca Juniors Azul y Amarilla", "River Plate Negra", "Arsenal Celeste",
+        "Argentina Negra", "Olympique de Marsella Celeste", "Italia Azul Marino", "Liverpool Negra, Blanca y Roja",
+        "Alemania Negra", "River Plate Blanca y Roja"
+      ],
+      futbol: [
+        "Chelsea Negra", "Barcelona Azulgrana Retro", "Juventus Blanca y Negra", "Argelia Verde", "Argelia Blanca",
+        "Paris Saint-Germain Blanca", "Barcelona Negra y Violeta", "Real Madrid Blanca con Franjas",
+        "Barcelona Crema con Cruz Roja", "Argentina Negra", "West Ham United Bordó", "Inter de Milán Gris",
+        "Real Madrid Blanca Clásica", "Borussia Dortmund Negra y Amarilla", "Manchester United Azul",
+        "Arsenal Azul Marino", "AC Milan Roja y Negra", "México Verde", "Bayern Múnich Roja",
+        "Olympique de Marsella Azul Marino", "Olympique de Marsella Blanca", "Boca Juniors Blanca con Franjas",
+        "Nigeria Verde", "Paris Saint-Germain Azul y Roja", "Portugal Roja", "Manchester United Roja",
+        "Olympique Lyonnais Azul Marino", "Roma Bordó", "Barcelona Azulgrana Spotify", "Corea del Sur Roja",
+        "Barcelona Azulgrana Amarilla", "Inter de Milán Azul y Negra", "España Roja", "Paraguay Blanca y Roja",
+        "Chelsea Negra y Amarilla", "Bélgica Roja", "West Ham United Bordó Boyle Sports", "Corinthians Negra y Naranja",
+        "Barcelona Negra Spotify", "Arsenal Blanca", "Boca Juniors Azul y Amarilla", "River Plate Blanca con Franja Roja",
+        "Napoli Azul", "Alemania Blanca", "Brasil Amarilla", "River Plate Roja y Blanca a Rayas",
+        "Brasil Negra", "Boca Juniors Azul Marino y Amarilla", "River Plate Blanca con Franja Roja Alternativa",
+        "Argentina Blanca Campeona", "Chelsea Azul", "Croacia Blanca y Roja", "Canadá Roja", "México Negra",
+        "Nigeria Blanca y Verde", "Brasil Blanca", "RB Leipzig Blanca", "Como Azul Nico Paz 10",
+        "Corinthians Negra y Blanca", "Como Negra y Naranja", "Napoli Negra", "Real Madrid Negra"
+      ],
+      shorts: [
+        "River Plate Negra", "Boca Juniors Azul y Amarillo", "Argentina Negra"
+      ],
+      rugby: [
+        "British & Irish Lions Blanca", "British & Irish Lions Roja", "Harlequins Rosa", "Francia Blanca",
+        "Irlanda Verde", "Francia Azul", "Queensland Maroons Bordó", "Stade Toulousain Negra",
+        "NSW Blues Azul y Blanca 50 Aniversario", "Australia Azul", "Escocia Celeste"
+      ]
+    };
+
+    const precioARS = new Intl.NumberFormat("es-AR", { maximumFractionDigits: 0 });
+    const catalogo = document.getElementById("catalogo");
+    const productSearch = document.getElementById("product-search");
+    const searchStatus = document.getElementById("search-status");
+    const searchEmpty = document.getElementById("search-empty");
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImage = document.getElementById("lightbox-image");
+    const closeButton = document.getElementById("lightbox-close");
+    const zoomOutButton = document.getElementById("zoom-out");
+    const zoomInButton = document.getElementById("zoom-in");
+    const zoomLabel = document.getElementById("zoom-label");
+    const cartToggle = document.getElementById("cart-toggle");
+    const cartCount = document.getElementById("cart-count");
+    const cartBackdrop = document.getElementById("cart-backdrop");
+    const cartClose = document.getElementById("cart-close");
+    const cartItems = document.getElementById("cart-items");
+    const cartTotal = document.getElementById("cart-total");
+    const cartClear = document.getElementById("cart-clear");
+    const cartToast = document.getElementById("cart-toast");
+    const transferBox = document.getElementById("transfer-box");
+    const aliasCopy = document.getElementById("alias-copy");
+    const receiptSend = document.getElementById("receipt-send");
+    const whatsappHint = document.getElementById("whatsapp-hint");
+    const mpAlias = document.getElementById("mp-alias").textContent.trim();
+    const whatsappNumber = "5493512600747"; // Número del vendedor con código de país y área, solo dígitos.
+    const cartStorageKey = "lincesKitsCarrito";
+    let carrito = {};
+    try {
+      const carritoGuardado = JSON.parse(localStorage.getItem(cartStorageKey) || "{}");
+      if (carritoGuardado && typeof carritoGuardado === "object" && !Array.isArray(carritoGuardado)) carrito = carritoGuardado;
+    } catch (_) { carrito = {}; }
+    let toastTimer = null;
+    let zoom = 1;
+    let baseImageWidth = 0;
+    let baseImageHeight = 0;
+    let lastImageTrigger = null;
+
+    function renderZoom() {
+      if (!baseImageWidth || !baseImageHeight) return;
+      lightboxImage.style.maxWidth = "none";
+      lightboxImage.style.maxHeight = "none";
+      lightboxImage.style.width = `${baseImageWidth * zoom}px`;
+      lightboxImage.style.height = `${baseImageHeight * zoom}px`;
+      lightboxImage.style.cursor = zoom > 1 ? "zoom-out" : "zoom-in";
+      zoomLabel.textContent = `${Math.round(zoom * 100)}%`;
+    }
+
+    function setZoom(nextZoom) {
+      zoom = Math.max(1, Math.min(3, nextZoom));
+      renderZoom();
+    }
+
+    function openLightbox(image, trigger) {
+      lastImageTrigger = trigger;
+      lightboxImage.src = image.src;
+      lightboxImage.alt = image.alt;
+      zoom = 1;
+      lightboxImage.style.width = "";
+      lightboxImage.style.height = "";
+      lightboxImage.style.maxWidth = "88vw";
+      lightboxImage.style.maxHeight = "76vh";
+      const ratio = image.naturalWidth / image.naturalHeight || 1;
+      const maxWidth = window.innerWidth * 0.88;
+      const maxHeight = window.innerHeight * 0.76;
+      const fit = Math.min(maxWidth / (image.naturalWidth || 1), maxHeight / (image.naturalHeight || 1));
+      baseImageWidth = (image.naturalWidth || 600) * fit;
+      baseImageHeight = (image.naturalHeight || 600 / ratio) * fit;
+      zoomLabel.textContent = "100%";
+      lightbox.classList.add("open");
+      lightbox.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+      closeButton.focus();
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove("open");
+      lightbox.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+      if (lastImageTrigger) lastImageTrigger.focus();
+    }
+
+    function normalizarBusqueda(texto) {
+      return texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
+    }
+
+    function filtrarCatalogo() {
+      const busqueda = normalizarBusqueda(productSearch.value);
+      let coincidencias = 0;
+      for (const seccion of catalogo.querySelectorAll(".collection")) {
+        let coincidenciasSeccion = 0;
+        for (const tarjeta of seccion.querySelectorAll(".card")) {
+          const coincide = !busqueda || tarjeta.dataset.search.includes(busqueda);
+          tarjeta.hidden = !coincide;
+          if (coincide) coincidenciasSeccion++;
+        }
+        seccion.hidden = coincidenciasSeccion === 0;
+        coincidencias += coincidenciasSeccion;
+      }
+      searchStatus.textContent = busqueda ? `${coincidencias} ${coincidencias === 1 ? "producto encontrado" : "productos encontrados"}` : "";
+      searchEmpty.hidden = !busqueda || coincidencias > 0;
+    }
+
+    productSearch.addEventListener("input", filtrarCatalogo);
+
+    function guardarCarrito() {
+      try { localStorage.setItem(cartStorageKey, JSON.stringify(carrito)); } catch (_) {}
+      renderCarrito();
+    }
+
+    function renderCarrito() {
+      const productosEnCarrito = Object.entries(carrito).filter(([, item]) => item && Number(item.cantidad) > 0);
+      const cantidadTotal = productosEnCarrito.reduce((suma, [, item]) => suma + Number(item.cantidad), 0);
+      const precioTotal = productosEnCarrito.reduce((suma, [, item]) => suma + Number(item.precio) * Number(item.cantidad), 0);
+      cartCount.textContent = cantidadTotal;
+      cartTotal.textContent = `$${precioARS.format(precioTotal)}`;
+      transferBox.hidden = cantidadTotal === 0;
+      receiptSend.disabled = cantidadTotal === 0 || !/^\d{10,15}$/.test(whatsappNumber);
+      whatsappHint.textContent = whatsappNumber
+        ? "Se abrirá WhatsApp con el detalle; adjuntá allí la captura del pago."
+        : "Falta configurar el número de WhatsApp del vendedor.";
+      if (!productosEnCarrito.length) {
+        cartItems.innerHTML = `<div class="cart-empty">Todavía no agregaste productos.</div>`;
+        cartClear.disabled = true;
+        cartClear.style.opacity = ".5";
+        return;
+      }
+      cartClear.disabled = false;
+      cartClear.style.opacity = "1";
+      cartItems.innerHTML = productosEnCarrito.map(([id, item]) => `
+        <article class="cart-row">
+          <img src="${item.imagen}" alt="${item.nombre}" loading="lazy">
+          <div><div class="cart-row-title">${item.nombre}</div><div class="cart-row-price">$${precioARS.format(item.precio)} c/u</div><div class="cart-row-size">Talle: ${item.talle || "A confirmar"}</div>
+            <div class="cart-quantity"><button type="button" data-cart-action="menos" data-product-id="${id}" aria-label="Quitar una unidad de ${item.nombre}">−</button><span>${item.cantidad}</span><button type="button" data-cart-action="mas" data-product-id="${id}" aria-label="Agregar una unidad de ${item.nombre}">+</button></div>
+          </div>
+          <button type="button" class="cart-remove" data-cart-action="eliminar" data-product-id="${id}">Quitar</button>
+        </article>`).join("");
+    }
+
+    function abrirCarrito() {
+      renderCarrito();
+      cartBackdrop.classList.add("open");
+      cartBackdrop.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+      cartClose.focus();
+    }
+
+    function cerrarCarrito() {
+      cartBackdrop.classList.remove("open");
+      cartBackdrop.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+      cartToggle.focus();
+    }
+
+    function mostrarAvisoCarrito(mensaje = "Agregado al carrito") {
+      cartToast.textContent = mensaje;
+      cartToast.classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => cartToast.classList.remove("show"), 1700);
+    }
+
+    aliasCopy.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(mpAlias);
+        mostrarAvisoCarrito("Alias copiado");
+      } catch (_) {
+        const campo = document.createElement("textarea");
+        campo.value = mpAlias;
+        campo.style.position = "fixed";
+        campo.style.opacity = "0";
+        document.body.appendChild(campo);
+        campo.select();
+        document.execCommand("copy");
+        campo.remove();
+        mostrarAvisoCarrito("Alias copiado");
+      }
+    });
+    receiptSend.addEventListener("click", () => {
+      if (receiptSend.disabled) return;
+      const lineas = Object.values(carrito)
+        .filter((item) => item && Number(item.cantidad) > 0)
+        .map((item) => `• ${item.nombre} | Talle ${item.talle || "A confirmar"} | x${item.cantidad}: $${precioARS.format(Number(item.precio) * Number(item.cantidad))}`);
+      const total = Object.values(carrito).reduce((suma, item) => suma + Number(item.precio) * Number(item.cantidad), 0);
+      const mensaje = `Hola, ya realicé la transferencia para mi compra en Linces's Kits.\n\n${lineas.join("\n")}\n\nTotal transferido: $${precioARS.format(total)}\nAlias: ${mpAlias}\n\nAdjunto el comprobante.`;
+      window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(mensaje)}`, "_blank", "noopener,noreferrer");
+    });
+
+    function agregarAlCarrito(id, nombre, precio, imagen, talle) {
+      const clave = `${id}-${talle}`;
+      const item = carrito[clave] || { nombre, precio, imagen, talle, cantidad: 0 };
+      item.cantidad = Number(item.cantidad) + 1;
+      carrito[clave] = item;
+      guardarCarrito();
+      mostrarAvisoCarrito();
+    }
+
+    cartToggle.addEventListener("click", abrirCarrito);
+    cartClose.addEventListener("click", cerrarCarrito);
+    cartBackdrop.addEventListener("click", (event) => { if (event.target === cartBackdrop) cerrarCarrito(); });
+    cartClear.addEventListener("click", () => { carrito = {}; guardarCarrito(); });
+    cartItems.addEventListener("click", (event) => {
+      const button = event.target.closest("button[data-cart-action]");
+      if (!button) return;
+      const { cartAction, productId } = button.dataset;
+      const item = carrito[productId];
+      if (!item) return;
+      if (cartAction === "eliminar") delete carrito[productId];
+      else if (cartAction === "mas") item.cantidad = Number(item.cantidad) + 1;
+      else if (cartAction === "menos") {
+        item.cantidad = Number(item.cantidad) - 1;
+        if (item.cantidad <= 0) delete carrito[productId];
+      }
+      guardarCarrito();
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && cartBackdrop.classList.contains("open")) cerrarCarrito();
+    });
+
+    zoomOutButton.addEventListener("click", () => setZoom(zoom - 0.25));
+    zoomInButton.addEventListener("click", () => setZoom(zoom + 0.25));
+    zoomLabel.addEventListener("click", () => setZoom(1));
+    closeButton.addEventListener("click", closeLightbox);
+    lightbox.addEventListener("click", (event) => { if (event.target === lightbox) closeLightbox(); });
+    lightboxImage.addEventListener("click", () => setZoom(zoom > 1 ? 1 : 2));
+    lightbox.addEventListener("wheel", (event) => {
+      if (!lightbox.classList.contains("open")) return;
+      event.preventDefault();
+      setZoom(zoom + (event.deltaY < 0 ? 0.15 : -0.15));
+    }, { passive:false });
+    document.addEventListener("keydown", (event) => {
+      if (!lightbox.classList.contains("open")) return;
+      if (event.key === "Escape") closeLightbox();
+      if (event.key === "+" || event.key === "=") setZoom(zoom + 0.25);
+      if (event.key === "-") setZoom(zoom - 0.25);
+    });
+
+    const ordenSecciones = ["conjuntos", "futbol", "shorts", "rugby"];
+    for (const id of ordenSecciones) {
+      const categoria = productos[id];
+      const seccion = document.createElement("section");
+      seccion.className = "collection";
+      seccion.id = id;
+      const encabezado = document.createElement("div");
+      encabezado.className = "section-head";
+      encabezado.innerHTML = `<div><div class="eyebrow">Colección</div><h2>${categoria.titulo}</h2></div><div class="price-tag">$${precioARS.format(categoria.precio)}</div>`;
+      const grilla = document.createElement("div");
+      grilla.className = "grid";
+      let guia = null;
+      if (id === "conjuntos" || id === "futbol" || id === "shorts" || id === "rugby") {
+        guia = document.createElement("div");
+        guia.className = "size-guide";
+        if (id === "conjuntos") {
+          guia.innerHTML = `<h3>Guía de talles · Conjuntos</h3><table><thead><tr><th>Talle</th><th>Camiseta (ancho × largo)</th><th>Short (ancho × largo)</th></tr></thead><tbody><tr><td>S</td><td>48 × 69 cm</td><td>32 × 43 cm</td></tr><tr><td>M</td><td>52 × 71 cm</td><td>33 × 45 cm</td></tr><tr><td>L</td><td>54 × 73 cm</td><td>34 × 48 cm</td></tr><tr><td>XL</td><td>56 × 75 cm</td><td>35 × 50 cm</td></tr><tr><td>XXL</td><td>58 × 77 cm</td><td>36 × 52 cm</td></tr></tbody></table><p class="size-note">La camiseta y el short del conjunto son del mismo talle.</p>`;
+        } else if (id === "futbol") {
+          guia.innerHTML = `<h3>Guía de talles · Camiseta de Fútbol</h3><table><thead><tr><th>Talle</th><th>Ancho</th><th>Largo</th></tr></thead><tbody><tr><td>S</td><td>48 cm</td><td>69 cm</td></tr><tr><td>M</td><td>52 cm</td><td>71 cm</td></tr><tr><td>L</td><td>54 cm</td><td>73 cm</td></tr><tr><td>XL</td><td>56 cm</td><td>75 cm</td></tr><tr><td>XXL</td><td>58 cm</td><td>77 cm</td></tr></tbody></table>`;
+        } else if (id === "shorts") {
+          guia.innerHTML = `<h3>Guía de talles · Shorts de Fútbol</h3><table><thead><tr><th>Talle</th><th>Ancho</th><th>Largo</th></tr></thead><tbody><tr><td>S</td><td>32 cm</td><td>43 cm</td></tr><tr><td>M</td><td>33 cm</td><td>45 cm</td></tr><tr><td>L</td><td>34 cm</td><td>48 cm</td></tr><tr><td>XL</td><td>35 cm</td><td>50 cm</td></tr><tr><td>XXL</td><td>36 cm</td><td>52 cm</td></tr></tbody></table><p class="size-note">Mismos talles y medidas de short que en los conjuntos.</p>`;
+        } else {
+          guia.innerHTML = `<h3>Guía de talles · Camiseta de Rugby</h3><table><thead><tr><th>Talle</th><th>Ancho</th><th>Largo</th></tr></thead><tbody><tr><td>S</td><td>48 cm</td><td>71 cm</td></tr><tr><td>M</td><td>50 cm</td><td>73 cm</td></tr><tr><td>L</td><td>52 cm</td><td>75 cm</td></tr><tr><td>XL</td><td>54 cm</td><td>77 cm</td></tr><tr><td>XXL</td><td>56 cm</td><td>79 cm</td></tr><tr><td>XXXL</td><td>58 cm</td><td>81 cm</td></tr></tbody></table>`;
+        }
+      }
+      const ordenImagenes = categoria.imagenes.map((url, indice) => ({ url, indice }));
+      ordenImagenes.forEach(({ url, indice }) => {
+        const tarjeta = document.createElement("article");
+        tarjeta.className = "card";
+        const nombreProducto = nombresProductos[id]?.[indice] || `${categoria.titulo} ${String(indice + 1).padStart(2, "0")}`;
+        const foto = document.createElement("div");
+        foto.className = "photo";
+        if (url.trim()) {
+          const img = document.createElement("img");
+          img.src = url.trim();
+          img.alt = nombreProducto;
+          img.loading = "lazy";
+          foto.classList.add("has-photo");
+          foto.setAttribute("role", "button");
+          foto.setAttribute("tabindex", "0");
+          foto.setAttribute("aria-label", `Ampliar foto de ${nombreProducto}`);
+          foto.addEventListener("click", () => openLightbox(img, foto));
+          foto.addEventListener("keydown", (event) => {
+            if (event.key === "Enter" || event.key === " ") { event.preventDefault(); openLightbox(img, foto); }
+          });
+          foto.appendChild(img);
+        } else {
+          foto.innerHTML = `<div class="placeholder"><b>${nombreProducto}</b><span>Pegá la URL de la imagen en el HTML</span></div>`;
+        }
+        const info = document.createElement("div");
+        info.className = "card-info";
+        tarjeta.dataset.search = normalizarBusqueda(`${nombreProducto} ${categoria.titulo}`);
+        const opcionesTalle = id === "rugby" ? ["S", "M", "L", "XL", "XXL", "XXXL"] : ["S", "M", "L", "XL", "XXL"];
+        info.innerHTML = `<div class="card-title">${nombreProducto}</div><div class="card-price">$${precioARS.format(categoria.precio)}</div>`;
+        const selectorTalle = document.createElement("select");
+        selectorTalle.className = "size-select";
+        selectorTalle.setAttribute("aria-label", `Elegí el talle para ${nombreProducto}`);
+        selectorTalle.required = true;
+        selectorTalle.innerHTML = `<option value="">Elegí tu talle</option>${opcionesTalle.map((talle) => `<option value="${talle}">${talle}</option>`).join("")}`;
+        const labelTalle = document.createElement("label");
+        labelTalle.className = "size-choice";
+        labelTalle.append("Talle", selectorTalle);
+        const botonAgregar = document.createElement("button");
+        botonAgregar.type = "button";
+        botonAgregar.className = "cart-add-button";
+        botonAgregar.textContent = "Agregar al carrito";
+        botonAgregar.disabled = true;
+        selectorTalle.addEventListener("change", () => { botonAgregar.disabled = !selectorTalle.value; });
+        botonAgregar.addEventListener("click", () => {
+          if (!selectorTalle.value) return;
+          agregarAlCarrito(`${id}-${indice + 1}`, nombreProducto, categoria.precio, url.trim(), selectorTalle.value);
+          selectorTalle.value = "";
+          botonAgregar.disabled = true;
+        });
+        info.append(labelTalle, botonAgregar);
+        tarjeta.append(foto, info);
+        grilla.appendChild(tarjeta);
+      });
+      seccion.appendChild(encabezado);
+      if (guia) seccion.appendChild(guia);
+      seccion.appendChild(grilla);
+      catalogo.appendChild(seccion);
+    }
+    renderCarrito();
+  </script>
+</body>
+</html>
